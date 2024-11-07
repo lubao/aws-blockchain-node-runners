@@ -9,7 +9,7 @@ export const SingleNodeCWDashboardJSON = {
             "properties": {
                 "view": "timeSeries",
                 "stat": "Average",
-                "period": 300,
+                "period": 60,
                 "stacked": false,
                 "yAxis": {
                     "left": {
@@ -32,7 +32,7 @@ export const SingleNodeCWDashboardJSON = {
             "properties": {
                 "view": "timeSeries",
                 "stat": "Average",
-                "period": 300,
+                "period": 60,
                 "stacked": false,
                 "yAxis": {
                     "left": {
@@ -55,7 +55,7 @@ export const SingleNodeCWDashboardJSON = {
             "properties": {
                 "view": "timeSeries",
                 "stat": "Average",
-                "period": 300,
+                "period": 60,
                 "stacked": false,
                 "yAxis": {
                     "left": {
@@ -80,7 +80,7 @@ export const SingleNodeCWDashboardJSON = {
                 "stacked": false,
                 "region": "${REGION}",
                 "stat": "Average",
-                "period": 300,
+                "period": 60,
                 "metrics": [
                     [ "CWAgent", "mem_used_percent", "InstanceId", "${INSTANCE_ID}", { "label": "${INSTANCE_ID}-${INSTANCE_NAME}" } ]
                 ],
@@ -98,7 +98,7 @@ export const SingleNodeCWDashboardJSON = {
                 "stacked": false,
                 "region": "${REGION}",
                 "stat": "Average",
-                "period": 300,
+                "period": 60,
                 "metrics": [
                     [ "CWAgent", "cpu_usage_iowait", "InstanceId", "${INSTANCE_ID}", { "label": "${INSTANCE_ID}-${INSTANCE_NAME}" } ]
                 ],
@@ -143,7 +143,7 @@ export const SingleNodeCWDashboardJSON = {
                 "stacked": false,
                 "region": "${REGION}",
                 "stat": "Average",
-                "period": 300,
+                "period": 60,
                 "title": "nvme2n1 Volume Read/Write (IO/sec)"
             }
         },
@@ -285,14 +285,14 @@ export const SingleNodeCWDashboardJSON = {
             }
         },
         {
-            "height": 5,
+            "height": 4,
             "width": 6,
             "y": 15,
             "x": 6,
             "type": "metric",
             "properties": {
                 "metrics": [
-                    [ "CWAgent", "disk_used_percent", "InstanceId", "${INSTANCE_ID}", "device", "nvme1n1", "path", "/var/solana/data", "fstype", "xfs", { "region": "${REGION}", "label": "/home/ubuntu/l2geth-source/l2geth-datadir" } ]
+                    [ "CWAgent", "disk_used_percent", "path", "/var/solana/data", "InstanceId", "${INSTANCE_ID}", "device", "nvme1n1", "fstype", "xfs", { "region": "${REGION}", "label": "/var/solana/data" } ]
                 ],
                 "sparkline": true,
                 "view": "singleValue",
@@ -303,14 +303,14 @@ export const SingleNodeCWDashboardJSON = {
             }
         },
         {
-            "height": 5,
+            "height": 4,
             "width": 6,
             "y": 15,
             "x": 12,
             "type": "metric",
             "properties": {
                 "metrics": [
-                    [ "CWAgent", "disk_used_percent", "InstanceId", "${INSTANCE_ID}", "device", "nvme2n1",  "path", "/var/solana/accounts", "fstype", "xfs", { "region": "${REGION}", "label": "/home/ubuntu/l2geth-source/l2geth-datadir" } ]
+                    [ "CWAgent", "disk_used_percent",  "path", "/var/solana/accounts", "InstanceId", "${INSTANCE_ID}", "device", "nvme2n1",  "fstype", "xfs", { "region": "${REGION}", "label": "/var/solana/accounts" } ]
                 ],
                 "sparkline": true,
                 "view": "singleValue",

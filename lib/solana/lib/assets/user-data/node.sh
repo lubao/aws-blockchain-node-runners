@@ -22,7 +22,7 @@ echo "ASG_NAME=${_ASG_NAME_}" >> /etc/environment
 source /etc/environment
 
 apt-get -yqq update
-apt-get -yqq install awscli jq unzip python3-pip
+apt-get -yqq install awscli jq unzip python3-pip chrony
 apt install unzip
 
 cd /opt
@@ -220,6 +220,8 @@ sudo wget -q https://github.com/solana-labs/solana/releases/download/v$SOLANA_VE
 sudo tar -xjvf solana-release-x86_64-unknown-linux-gnu.tar.bz2
 sudo mv solana-release/bin/* ./bin/
 
+
+
 echo "Preparing Solana start script"
 
 cd /home/solana/bin
@@ -295,8 +297,15 @@ sed -i "s;__SOLANA_METRICS_CONFIG__;\"$SOLANA_METRICS_CONFIG\";g" /home/solana/b
 sed -i "s/__EXPECTED_GENESIS_HASH__/$EXPECTED_GENESIS_HASH/g" /home/solana/bin/validator.sh
 sed -i "s/__KNOWN_VALIDATORS__/$KNOWN_VALIDATORS/g" /home/solana/bin/validator.sh
 sed -i "s/__ENTRY_POINTS__/$ENTRY_POINTS/g" /home/solana/bin/validator.sh
-sudo chmod +x /home/solana/bin/validator.sh
 
+
+cd /var/solana/data/ledger
+wget --trust-server-names http://entrypoint3.mainnet-beta.solana.com/snapshot.tar.bz2
+wget --trust-server-names http://entrypoint3.mainnet-beta.solana.com/incremental-snapshot.tar.bz2
+sed -i "s/--log -/--no-snapshot-fetch --log -/g" /home/solana/bin/validator.sh
+cd -
+
+sudo chmod +x /home/solana/bin/validator.sh
 sudo chown -R solana:solana /var/solana
 sudo chown -R solana:solana /home/solana
 
@@ -314,29 +323,13 @@ User=solana
 LimitNOFILE=1000000
 LogRateLimitIntervalSec=0
 Environment="PATH=/bin:/usr/bin:/home/solana/bin"
-ExecStart=/home/solana/bin/validator.sh
+ExecStart=/home/solana/bin/validator.sh 
 [Install]
 WantedBy=multi-user.target
 EOF'
 
 sudo systemctl daemon-reload
 sudo systemctl enable --now sol
-
-echo 'Configuring logrotate to rotate Solana logs'
-
-sudo bash -c 'sudo cat > logrotate.sol <<EOF
-/home/sol/solana-validator.log {
-  rotate 7
-  daily
-  missingok
-  postrotate
-    systemctl kill -s USR1 sol.service
-  endscript
-}
-EOF'
-
-sudo cp logrotate.sol /etc/logrotate.d/sol
-sudo systemctl restart logrotate.service
 
 echo "Configuring syncchecker script"
 cd /opt

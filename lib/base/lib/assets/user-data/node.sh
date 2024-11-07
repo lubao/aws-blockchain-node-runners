@@ -34,7 +34,8 @@ fi
 
 echo "Updating and installing required system packages"
 yum update -y
-yum -y install amazon-cloudwatch-agent collectd jq yq gcc ncurses-devel aws-cfn-bootstrap zstd
+yum -y install amazon-cloudwatch-agent collectd jq yq gcc ncurses-devel aws-cfn-bootstrap zstd chrony
+service chronyd start
 wget $YQ_URI -O /usr/bin/yq && chmod +x /usr/bin/yq
 
 echo " Installing aria2 a p2p downloader"
